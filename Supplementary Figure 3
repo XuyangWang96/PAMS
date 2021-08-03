@@ -1,0 +1,89 @@
+#DPN vs DNN
+discor_pos <- read.table("D:\\Code\\Img\\Parameters result\\discordancePos.txt")
+discor_neg <- read.table("D:\\Code\\Img\\Parameters result\\discordanceNeg.txt")
+a <- reshape(discor_pos,varying = list(1:10),direction = "long")
+b <- reshape(discor_neg,varying = list(1:10),direction = "long")
+discor_data<-data.frame(R=c(a$V1,b$V1),Condition=rep(c('DPN','DNN'),each=110),ID=rep(1:110,times=2))
+pdf(file="D:\\Code\\Img\\pairedtest_DPN_DNN.pdf")
+discor_data %>%
+  tidyr::spread(Condition, R) %>%
+  dplyr::mutate(is_increasing = DPN > DNN) %>%
+  tidyr::gather("Condition", "R", 2:3) %>%
+  ggplot(aes(x = Condition, y = R)) +
+  geom_violin(aes(fill = Condition), alpha = 0.8, col = "grey") +
+  scale_fill_manual(values = c('steelblue3','darkorange2'))+
+  geom_point(colour="grey10",alpha=1,shape=21,size=0.5) +
+  geom_boxplot(width=0.1, color="grey11", alpha=0.8,size=0.3)+
+  geom_line(aes(group =ID, col = is_increasing),size=0.3) +
+  scale_colour_manual(values = c("gray", "orangered1"))+
+  theme_bw()+
+  stat_compare_means(paired = TRUE)
+dev.off()
+
+#ANN vs APN
+accor_pos <- read.table("D:\\Code\\Img\\Parameters result\\accordancePos.txt")
+accor_neg <- read.table("D:\\Code\\Img\\Parameters result\\accordanceNeg.txt")
+a <- reshape(accor_pos,varying = list(1:10),direction = "long")
+b <- reshape(accor_neg,varying = list(1:10),direction = "long")
+accor_data<-data.frame(R=c(a$V1,b$V1),Condition=rep(c('APN','ANN'),each=110),ID=rep(1:110,times=2))
+pdf(file="D:\\Code\\Img\\pairedtest_APN_ANN.pdf")
+accor_data %>%
+  tidyr::spread(Condition, R) %>%
+  dplyr::mutate(is_increasing = ANN < APN) %>%
+  tidyr::gather("Condition", "R", 2:3) %>%
+  ggplot(aes(x = Condition, y = R)) +
+  geom_violin(aes(fill = Condition), alpha = 0.8, col = "grey") +
+  scale_fill_manual(values = c('steelblue3','darkorange2'))+
+  geom_point(colour="grey10",alpha=1,shape=21,size=0.5) +
+  geom_boxplot(width=0.1, color="grey11", alpha=0.8,size=0.3)+
+  geom_line(aes(group =ID, col = is_increasing),size=0.3) +
+  scale_colour_manual(values = c("gray", "orangered1"))+
+  theme_bw()+
+  stat_compare_means(paired = TRUE)
+dev.off()
+
+#PNN vs PPN
+pear_all <- read.table("D:\\Code\\Img\\Parameters result\\pearson_all.txt")
+pear_pos <- pear_all[1,]
+pear_neg <- pear_all[2,]
+
+a <- reshape(pear_pos,varying = list(1:10),direction = "long")
+b <- reshape(pear_neg,varying = list(1:10),direction = "long")
+pear_data<-data.frame(R=c(a$V1,b$V1),Condition=rep(c('PPN','PNN'),each=10),ID=rep(1:10,times=2))
+pdf(file="D:\\Code\\Img\\pairedtest_PPN_PNN.pdf")
+pear_data %>%
+  tidyr::spread(Condition, R) %>%
+  dplyr::mutate(is_increasing = PNN < PPN) %>%
+  tidyr::gather("Condition", "R", 2:3) %>%
+  ggplot(aes(x = Condition, y = R)) +
+  geom_violin(aes(fill = Condition), alpha = 0.8, col = "grey") +
+  scale_fill_manual(values = c('steelblue3','darkorange2'))+
+  geom_point(colour="grey10",alpha=1,shape=21,size=0.5) +
+  geom_boxplot(width=0.1, color="grey11", alpha=0.8,size=0.3)+
+  geom_line(aes(group =ID, col = is_increasing),size=0.3) +
+  scale_colour_manual(values = c("gray", "orangered1"))+
+  theme_bw()+
+  stat_compare_means(paired = TRUE)
+dev.off()
+
+#DPN vs ANN
+discor_pos <- read.table("D:\\Code\\Img\\Parameters result\\discordancePos.txt")
+accor_neg <- read.table("D:\\Code\\Img\\Parameters result\\accordanceNeg.txt")
+a <- reshape(discor_pos,varying = list(1:10),direction = "long")
+b <- reshape(accor_neg,varying = list(1:10),direction = "long")
+disaccor_data<-data.frame(R=c(a$V1,b$V1),Condition=rep(c('DPN','ANN'),each=110),ID=rep(1:110,times=2))
+pdf(file="D:\\Code\\Img\\pairedtest_DPN_ANN.pdf")
+disaccor_data %>%
+  tidyr::spread(Condition, R) %>%
+  dplyr::mutate(is_increasing = DPN > ANN) %>%
+  tidyr::gather("Condition", "R", 2:3) %>%
+  ggplot(aes(x = Condition, y = R)) +
+  geom_violin(aes(fill = Condition), alpha = 0.8, col = "grey") +
+  scale_fill_manual(values = c('steelblue3','darkorange2'))+
+  geom_point(colour="grey10",alpha=1,shape=21,size=0.5) +
+  geom_boxplot(width=0.1, color="grey11", alpha=0.8,size=0.3)+
+  geom_line(aes(group =ID, col = is_increasing),size=0.3) +
+  scale_colour_manual(values = c("gray", "orangered1"))+
+  theme_bw()+
+  stat_compare_means(paired = TRUE)
+dev.off()
