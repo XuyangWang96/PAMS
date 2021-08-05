@@ -1,6 +1,6 @@
 #DPN vs DNN
-discor_pos <- read.table("D:\\Code\\Img\\Parameters result\\discordancePos.txt")
-discor_neg <- read.table("D:\\Code\\Img\\Parameters result\\discordanceNeg.txt")
+discor_pos <- read.table("discordancePos.txt")
+discor_neg <- read.table("discordanceNeg.txt")
 a <- reshape(discor_pos,varying = list(1:10),direction = "long")
 b <- reshape(discor_neg,varying = list(1:10),direction = "long")
 discor_data<-data.frame(R=c(a$V1,b$V1),Condition=rep(c('DPN','DNN'),each=110),ID=rep(1:110,times=2))
@@ -21,8 +21,8 @@ discor_data %>%
 dev.off()
 
 #ANN vs APN
-accor_pos <- read.table("D:\\Code\\Img\\Parameters result\\accordancePos.txt")
-accor_neg <- read.table("D:\\Code\\Img\\Parameters result\\accordanceNeg.txt")
+accor_pos <- read.table("accordancePos.txt")
+accor_neg <- read.table("accordanceNeg.txt")
 a <- reshape(accor_pos,varying = list(1:10),direction = "long")
 b <- reshape(accor_neg,varying = list(1:10),direction = "long")
 accor_data<-data.frame(R=c(a$V1,b$V1),Condition=rep(c('APN','ANN'),each=110),ID=rep(1:110,times=2))
@@ -43,7 +43,7 @@ accor_data %>%
 dev.off()
 
 #PNN vs PPN
-pear_all <- read.table("D:\\Code\\Img\\Parameters result\\pearson_all.txt")
+pear_all <- read.table("pearson_all.txt")
 pear_pos <- pear_all[1,]
 pear_neg <- pear_all[2,]
 
@@ -67,8 +67,6 @@ pear_data %>%
 dev.off()
 
 #DPN vs ANN
-discor_pos <- read.table("D:\\Code\\Img\\Parameters result\\discordancePos.txt")
-accor_neg <- read.table("D:\\Code\\Img\\Parameters result\\accordanceNeg.txt")
 a <- reshape(discor_pos,varying = list(1:10),direction = "long")
 b <- reshape(accor_neg,varying = list(1:10),direction = "long")
 disaccor_data<-data.frame(R=c(a$V1,b$V1),Condition=rep(c('DPN','ANN'),each=110),ID=rep(1:110,times=2))
