@@ -1,0 +1,75 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy.stats import ttest_ind
+import scipy.stats  as stats
+from scipy.stats import ttest_1samp
+##Stage-specific anaysis
+
+path=r'\Patients.xlsx'
+df=pd.read_excel(path,'vs')
+df['|True - Prediction|']=abs(df['UPDRSIII']-df['Prediction'])
+df['True - Prediction'] = df['UPDRSIII']-df['Prediction']
+
+stats.spearmanr(df['HY'],df['UPDRSIII'])
+stats.spearmanr(df['Prediction'],df['HY'])
+stats.spearmanr(df['|True - Prediction|'],df['HY'])
+stats.spearmanr(df['True - Prediction'],df['HY'])
+
+mild_df=df[df["HY"].isin(['1','1.5','2'])]
+moderate_df=df[df["HY"].isin(['2.5','3'])]
+severe_df=df[df["HY"].isin(['4','5'])]
+
+
+ttest_ind(moderate_df['True - Prediction'],mild_df['True - Prediction'])
+ttest_ind(severe_df['True - Prediction'],moderate_df['True - Prediction'])
+ttest_ind(severe_df['True - Prediction'],mild_df['True - Prediction'])
+data=pd.concat([mild_df['True - Prediction'],moderate_df['True - Prediction'],severe_df['True - Prediction']])
+group=pd.concat([pd.Series(["Mild"]*83),pd.Series(["Moderate"]*81),pd.Series(["Severe"]*12)])
+group_diff=pd.DataFrame({"True - Prediction":data[0:].tolist(),"Group":group[0:].tolist()})
+
+#Plot the Fig. A
+plt.rcParams['font.family']="Arial"
+plt.rcParams['font.size']=30
+plt.figure(figsize=(9, 9.5), dpi=300)
+plt.style.use('seaborn-white')
+sns.boxplot(x='HY',y='UPDRSIII',data=df,palette='vlag',linewidth=2.5,saturation=0.8,width=0.8)
+#sns.violinplot(x='HY',y='UPDRSIII',data=df,palette='vlag',scale="width",inner="quartiles")
+sns.swarmplot(x='HY',y='UPDRSIII',data=df,size=8,color="#CEDADF",edgecolor="grey",linewidth=1.5)
+with plt.rc_context({'lines.linewidth': 2.5}):
+    sns.pointplot(x='HY',y='UPDRSIII',data=df,color='#C7802D')
+
+#Plot the Fig. B
+plt.rcParams['font.family']="Arial"
+plt.rcParams['font.size']=30
+plt.figure(figsize=(9, 9.5), dpi=300)
+sns.boxplot(x='HY',y='Prediction',data=df,palette='vlag',linewidth=2.5,saturation=0.8,width=0.8)
+sns.swarmplot(x='HY',y='Prediction',data=df,size=8,color="#CEDADF",edgecolor="grey",linewidth=1.5)
+with plt.rc_context({'lines.linewidth':2.5}):
+    sns.pointplot(x='HY',y='Prediction',data=df,color='#C7802D')
+
+#Plot the Fig. C
+plt.rcParams['font.family']="Arial"
+plt.rcParams['font.size']=30
+plt.figure(figsize=(9, 9.5), dpi=300)
+sns.boxplot(x='HY',y='True - Prediction',data=df,palette='vlag',linewidth=2.5,saturation=0.8,width=0.8)
+sns.swarmplot(x='HY',y='True - Prediction',data=df,size=8,color="#CEDADF",edgecolor="grey",linewidth=1.5)
+with plt.rc_context({'lines.linewidth':2.5}):
+    sns.pointplot(x='HY',y='True - Prediction',data=df,color='#C7802D')
+
+#Plot the Fig. D
+plt.rcParams['font.family']="Arial"
+plt.rcParams['font.size']=30
+plt.figure(figsize=(9, 9.5))
+sns.boxplot(x='Group',y='True - Prediction',data=group_diff,palette='vlag',linewidth=2.5,saturation=1,width=0.5)
+sns.swarmplot(x='Group',y='True - Prediction',data=group_diff,size=8,color="#CEDADF",edgecolor="grey",linewidth=1.5)
+with plt.rc_context({'lines.linewidth': 2.5}):
+    sns.pointplot(x='Group',y='True - Prediction',data=group_diff,color='#C7802D')
+plt.tight_layout()
+
+
+
+
+
+
