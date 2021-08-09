@@ -1,5 +1,5 @@
 #DPN vs DNN
-discor_pos <- read.table("discordancePos.txt")
+discor_pos <- read.table("discordancePos.txt") #load the data from the parameter results
 discor_neg <- read.table("discordanceNeg.txt")
 a <- reshape(discor_pos,varying = list(1:10),direction = "long")
 b <- reshape(discor_neg,varying = list(1:10),direction = "long")
